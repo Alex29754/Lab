@@ -1,39 +1,44 @@
 #include <iostream>
-#include <string>
-
-class MyString {
+#include <cstring>
+using namespace std;
+class String {
 private:
-    std::string str;
+    char* str;
 
 public:
-    MyString(const std::string& s) : str(s) {}
+    String(const char* s = "") {
+        str = new char[strlen(s) + 1];
+        copy(s, s + strlen(s) + 1, str);
+    }
 
-    MyString(const MyString& other) : str(other.str) {}
+    String(const String& other) : String(other.str) {}
 
-    MyString& operator=(const MyString& other) {
-        if (this != &other) {
-            str = other.str;
+    String& operator=(const String& other) {
+    if (this != &other) {
+        delete[] str;
+        str = new char[strlen(other.str) + 1];
+        copy(other.str, other.str + strlen(other.str) + 1, str);
         }
         return *this;
     }
 
-    ~MyString() {
+    ~String() {
+        delete[] str;
     }
 
     void print() {
-        std::cout << str << std::endl;
+        cout << str << std::endl;
     }
 };
 
 int main() {
-    MyString str1("Hello");
-    MyString str2 = str1; // Copy constructor
-    MyString str3("World");
-    str3 = str2; // Copy assignment operator
+    String s1("Hello, world!!!");
+    String s2 = s1; // »спользование конструктора копировани€
+    s2.print();
 
-    str1.print();
-    str2.print();
-    str3.print();
+    String s3;
+    s3 = s1; // »спользование оператора присваивани€ копировани€
+    s3.print();
 
     return 0;
 }
